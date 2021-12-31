@@ -159,41 +159,17 @@ const trap = {
 export const CardSchema = Type.Union(
 	[
 		Type.Union([
-			Type.Object(
-				{ ...baseMonster, ...withLevel, effect: Type.Literal(false), subtype: Type.Literal("Normal") },
-				{ $id: "https://api.alphakretin.com/normal-monster-card.json" }
-			),
-			Type.Object(
-				{ ...baseMonster, ...withLevel, effect: Type.Literal(false), subtype: Type.Literal("Token") },
-				{ $id: "https://api.alphakretin.com/token-card.json" }
-			),
-			Type.Object(
-				{ ...baseMonster, ...withLevel, effect: Type.Literal(true), subtype: Type.Null() },
-				{ $id: "https://api.alphakretin.com/orange-monster-card.json" }
-			), // orange-coloured cards
-			Type.Object(
-				{ ...baseMonster, ...withLevel, effect: Type.Boolean(), subtype: Type.Literal("Ritual") },
-				{ $id: "https://api.alphakretin.com/ritual-monster-card.json" }
-			),
-			Type.Object(
-				{ ...baseMonster, ...withLevel, effect: Type.Boolean(), subtype: Type.Literal("Fusion") },
-				{ $id: "https://api.alphakretin.com/fusion-monster-card.json" }
-			),
-			Type.Object(
-				{ ...baseMonster, ...withLevel, effect: Type.Boolean(), subtype: Type.Literal("Synchro") },
-				{ $id: "https://api.alphakretin.com/synchro-monster-card.json" }
-			),
-			Type.Object(
-				{ ...baseMonster, effect: Type.Boolean(), ...xyz },
-				{ $id: "https://api.alphakretin.com/xyz-monster-card.json" }
-			),
-			Type.Object(
-				{ ...baseMonster, effect: Type.Boolean(), ...link },
-				{ $id: "https://api.alphakretin.com/link-monster-card.json" }
-			)
+			Type.Object({ ...baseMonster, ...withLevel, effect: Type.Literal(false), subtype: Type.Literal("Normal") }),
+			Type.Object({ ...baseMonster, ...withLevel, effect: Type.Literal(false), subtype: Type.Literal("Token") }),
+			Type.Object({ ...baseMonster, ...withLevel, effect: Type.Literal(true), subtype: Type.Null() }), // orange-coloured cards
+			Type.Object({ ...baseMonster, ...withLevel, effect: Type.Boolean(), subtype: Type.Literal("Ritual") }),
+			Type.Object({ ...baseMonster, ...withLevel, effect: Type.Boolean(), subtype: Type.Literal("Fusion") }),
+			Type.Object({ ...baseMonster, ...withLevel, effect: Type.Boolean(), subtype: Type.Literal("Synchro") }),
+			Type.Object({ ...baseMonster, effect: Type.Boolean(), ...xyz }),
+			Type.Object({ ...baseMonster, effect: Type.Boolean(), ...link })
 		]),
-		Type.Object({ ...base, ...spell }, { $id: "https://api.alphakretin.com/spell-card.json" }),
-		Type.Object({ ...base, ...trap }, { $id: "https://api.alphakretin.com/trap-card.json" })
+		Type.Object({ ...base, ...spell }),
+		Type.Object({ ...base, ...trap })
 	],
 	{ $id: "https://api.alphakretin.com/card.json" }
 );
