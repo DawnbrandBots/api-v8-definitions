@@ -104,6 +104,7 @@ const baseMonster = {
 	typeline: Type.String(),
 	attribute: Type.Enum(Attribute),
 	race: Type.Enum(Race),
+	// TODO: extend to -1 for ?
 	atk: Type.Integer({ minimum: 0 }),
 	// always false for Fusions due to a data bug
 	tuner: Type.Boolean(),
@@ -114,6 +115,7 @@ const baseMonster = {
 const withLevel = {
 	// refers to the printed number of stars, regardless of gameplay (Ultimaya)
 	level: Type.Integer({ minimum: 0, maximum: 12 }),
+	// TODO: extend to -1 for ?
 	def: Type.Integer({ minimum: 0 })
 };
 
@@ -121,13 +123,26 @@ const xyz = {
 	subtype: Type.Literal("Xyz"),
 	// refers to the printed number of stars, regardless of gameplay (F0, iC1000)
 	rank: Type.Integer({ minimum: 0, maximum: 13 }),
+	// TODO: extend to -1 for ?
 	def: Type.Integer({ minimum: 0 })
 };
+
+// The Unicode arrows that correspond to emoji
+export enum LinkArrow {
+	"Bottom-Left" = "↙",
+	Bottom = "⬇",
+	"Bottom-Right" = "↘",
+	Left = "⬅",
+	Right = "➡",
+	"Top-Left" = "↖",
+	Top = "⬆",
+	"Top-Right" = "↗"
+}
 
 const link = {
 	subtype: Type.Literal("Link"),
 	link: Type.Integer({ minimum: 1, maximum: 8 }),
-	arrows: Type.Array(Type.String()) // same number of elements as specified by `link`
+	arrows: Type.Array(Type.Enum(LinkArrow), { minItems: 1, maxItems: 8 }) // same number of elements as specified by `link`
 };
 
 export enum SpellType {
@@ -140,36 +155,65 @@ export enum SpellType {
 	// Link
 }
 
-const spell = {
-	type: Type.Literal("Spell"),
-	subtype: Type.Enum(SpellType)
-};
-
 export enum TrapType {
 	Normal = "Normal",
 	Continuous = "Continuous",
 	Counter = "Counter"
 }
 
-const trap = {
-	type: Type.Literal("Trap"),
-	subtype: Type.Enum(TrapType)
-};
+const NormalMonsterCardSchema = Type.Object({
+	...baseMonster,
+	...withLevel,
+	effect: Type.Literal(false),
+	subtype: Type.Literal("Normal")
+});
+const TokenCardSchema = Type.Object({
+	...baseMonster,
+	...withLevel,
+	effect: Type.Literal(false),
+	subtype: Type.Literal("Token")
+});
+const OrangeMonsterCardSchema = Type.Object({
+	...baseMonster,
+	...withLevel,
+	effect: Type.Literal(true),
+	subtype: Type.Null()
+});
+const RitualMonsterCardSchema = Type.Object({
+	...baseMonster,
+	...withLevel,
+	effect: Type.Boolean(),
+	subtype: Type.Literal("Ritual")
+});
+const FusionMonsterCardSchema = Type.Object({
+	...baseMonster,
+	...withLevel,
+	effect: Type.Boolean(),
+	subtype: Type.Literal("Fusion")
+});
+const SynchroMonsterCardSchema = Type.Object({
+	...baseMonster,
+	...withLevel,
+	effect: Type.Boolean(),
+	subtype: Type.Literal("Synchro")
+});
+const XyzMonsterCardSchema = Type.Object({ ...baseMonster, effect: Type.Boolean(), ...xyz });
+const LinkMonsterCardSchema = Type.Object({ ...baseMonster, effect: Type.Boolean(), ...link });
+const SpellCardSchema = Type.Object({ ...base, type: Type.Literal("Spell"), subtype: Type.Enum(SpellType) });
+const TrapCardSchema = Type.Object({ ...base, type: Type.Literal("Trap"), subtype: Type.Enum(TrapType) });
 
 export const CardSchema = Type.Union(
 	[
-		Type.Union([
-			Type.Object({ ...baseMonster, ...withLevel, effect: Type.Literal(false), subtype: Type.Literal("Normal") }),
-			Type.Object({ ...baseMonster, ...withLevel, effect: Type.Literal(false), subtype: Type.Literal("Token") }),
-			Type.Object({ ...baseMonster, ...withLevel, effect: Type.Literal(true), subtype: Type.Null() }), // orange-coloured cards
-			Type.Object({ ...baseMonster, ...withLevel, effect: Type.Boolean(), subtype: Type.Literal("Ritual") }),
-			Type.Object({ ...baseMonster, ...withLevel, effect: Type.Boolean(), subtype: Type.Literal("Fusion") }),
-			Type.Object({ ...baseMonster, ...withLevel, effect: Type.Boolean(), subtype: Type.Literal("Synchro") }),
-			Type.Object({ ...baseMonster, effect: Type.Boolean(), ...xyz }),
-			Type.Object({ ...baseMonster, effect: Type.Boolean(), ...link })
-		]),
-		Type.Object({ ...base, ...spell }),
-		Type.Object({ ...base, ...trap })
+		NormalMonsterCardSchema,
+		TokenCardSchema,
+		OrangeMonsterCardSchema,
+		RitualMonsterCardSchema,
+		FusionMonsterCardSchema,
+		SynchroMonsterCardSchema,
+		XyzMonsterCardSchema,
+		LinkMonsterCardSchema,
+		SpellCardSchema,
+		TrapCardSchema
 	],
 	{ $id: "https://api.alphakretin.com/card.json" }
 );
