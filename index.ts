@@ -3,14 +3,11 @@ import { TSchema, Type } from "@sinclair/typebox";
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types,@typescript-eslint/explicit-function-return-type
 export const Nullable = <T extends TSchema>(type: T) => Type.Union([type, Type.Null()]);
 
-export const CardText = Type.Object(
-	{
-		name: Type.String(),
-		description: Type.String(),
-		pendulum: Type.Optional(Type.String())
-	},
-	{ $id: "https://api.alphakretin.com/card-text.json" }
-);
+export const CardText = Type.Object({
+	name: Type.String(),
+	description: Type.String(),
+	pendulum: Type.Optional(Type.String())
+});
 
 const base = {
 	password: Type.Integer(),
