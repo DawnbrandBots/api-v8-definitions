@@ -138,7 +138,7 @@ const XyzMonsterCardSchema = Type.Object({
 const LinkMonsterCardSchema = Type.Object({
 	...baseMonster,
 	// elements are unique
-	arrows: Type.Array(Type.Enum(LinkArrow), { minItems: 1, maxItems: 8 })
+	link_arrows: Type.Array(Type.Enum(LinkArrow), { minItems: 1, maxItems: 8 })
 });
 const SpellCardSchema = Type.Object({ ...base, card_type: Type.Literal("Spell"), property: Type.Enum(SpellType) });
 const TrapCardSchema = Type.Object({ ...base, card_type: Type.Literal("Trap"), property: Type.Enum(TrapType) });
