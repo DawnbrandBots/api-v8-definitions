@@ -38,6 +38,16 @@ export const CardSet = Type.Object({
 
 export const CardSetList = Type.Optional(Type.Array(CardSet));
 
+export enum LimitRegulation {
+	Forbidden = "Forbidden",
+	Limited = "Limited",
+	SemiLimited = "Semi-Limited",
+	Unlimited = "Unlimited",
+	Unreleased = "Not yet released",
+	// For most purposes equivalent to the above
+	NotYetLegal = "Not yet legal"
+}
+
 const base = {
 	konami_id: Nullable(Type.Integer({ minimum: 0 })),
 	password: Nullable(Type.Integer({ minimum: 0 })),
@@ -58,6 +68,12 @@ const base = {
 		ko: CardSetList,
 		"zh-CN": CardSetList,
 		"zh-TW": CardSetList
+	}),
+	limit_regulation: Type.Object({
+		// null = Not yet released, structure may be changed in the future
+		tcg: Nullable(Type.Enum(LimitRegulation)),
+		ocg: Nullable(Type.Enum(LimitRegulation)),
+		speed: Type.Optional(Type.Enum(LimitRegulation))
 	})
 };
 
