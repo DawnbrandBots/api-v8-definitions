@@ -51,6 +51,9 @@ export enum LimitRegulation {
 const base = {
 	konami_id: Nullable(Type.Integer({ minimum: 0 })),
 	password: Nullable(Type.Integer({ minimum: 0 })),
+	fake_password: Type.Optional(
+		Type.Union([Type.Integer({ minimum: 0 }), Type.Array(Type.Integer({ minimum: 0 }), { minItems: 2 })])
+	),
 	name: Type.Object({
 		...locales,
 		ja_romaji: Nullable(Type.String()),
