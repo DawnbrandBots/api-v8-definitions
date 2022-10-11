@@ -52,7 +52,7 @@ const base = {
 	konami_id: Nullable(Type.Integer({ minimum: 0 })),
 	password: Nullable(Type.Integer({ minimum: 0 })),
 	fake_password: Type.Optional(
-		Type.Union([Type.Integer({ minimum: 0 }), Type.Array(Type.Integer({ minimum: 0 }), { minItems: 2 })])
+		Type.Union([Type.Integer({ minimum: 0 }), Type.Array(Type.Integer({ minimum: 0 }), { minItems: 1 })])
 	),
 	name: Type.Object({
 		...locales,
