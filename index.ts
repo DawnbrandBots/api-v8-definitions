@@ -171,5 +171,5 @@ export const CardSchema = Type.Union(
 		SpellCardSchema,
 		TrapCardSchema
 	],
-	{ $id: "https://api.alphakretin.com/yaml-yugi/card.json" }
+	{ $id: "/ocg-tcg/card.json" }
 );
