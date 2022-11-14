@@ -118,11 +118,12 @@ const TrapCardSchema = Type.Object({
 });
 
 export const RushCardSchema = Type.Union(
+	// Schema match priority is in array order. Be careful due to the similarity in shapes
 	[
+		FusionEffectMonsterCardSchema,
+		FusionNonEffectMonsterCardSchema,
 		NormalMonsterCardSchema,
 		MainDeckEffectMonsterCardSchema,
-		FusionNonEffectMonsterCardSchema,
-		FusionEffectMonsterCardSchema,
 		SpellCardSchema,
 		TrapCardSchema
 	],
