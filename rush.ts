@@ -73,50 +73,32 @@ const NormalMonsterCardSchema = Type.Object({
 	text: Type.Object(locales)
 });
 
-const EffectMonsterCardSchema = Type.Object({
+const MainDeckEffectMonsterCardSchema = Type.Object({
 	...baseMonster,
-	...effect
-});
-
-const ContinuousEffectMonsterCardSchema = Type.Object({
-	...baseMonster,
-	...continuousEffect
-});
-
-const MaximumEffectMonsterCardSchema = Type.Object({
-	...baseMonster,
-	...effect,
-	...maximum
-});
-
-const MaximumContinuousEffectMonsterCardSchema = Type.Object({
-	...baseMonster,
-	...continuousEffect,
-	...maximum
+	// if present then summoning_condition will be present
+	maximum_atk: Type.Optional(Type.Integer({ minimum: 0 })),
+	// present for Maximum Monsters and others like Cyber Dragon
+	summoning_condition: Type.Optional(Type.Object(locales)),
+	requirement: Type.Object(locales),
+	// if summoning_condition is present then contains "Summoning condition"
+	// also may contain "Continuous" or "Multi-Choice"
+	effect_types: Type.Optional(Type.Array(Type.String({ minLength: 1 }), { minItems: 1 })),
+	effect: Type.Object(locales)
 });
 
 const FusionNonEffectMonsterCardSchema = Type.Object({
 	...baseMonster,
-	...fusion,
-	...effect
+	materials: Type.Object(locales)
 });
 
 const FusionEffectMonsterCardSchema = Type.Object({
 	...baseMonster,
-	...fusion,
-	...continuousEffect
-});
-
-const FusionContinuousEffectMonsterCardSchema = Type.Object({
-	...baseMonster,
-	...fusion
-});
-
-const MultiChoiceEffectMonsterCardSchema = Type.Object({
-	...baseMonster,
-	...fusion,
+	materials: Type.Object(locales),
 	requirement: Type.Object(locales),
-	multi_choice_effect: Type.Object(locales)
+	// if summoning_condition is present then contains "Summoning condition"
+	// also may contain "Continuous" or "Multi-Choice"
+	effect_types: Type.Optional(Type.Array(Type.String({ minLength: 1 }), { minItems: 1 })),
+	effect: Type.Object(locales)
 });
 
 const SpellCardSchema = Type.Object({
@@ -138,14 +120,9 @@ const TrapCardSchema = Type.Object({
 export const RushCardSchema = Type.Union(
 	[
 		NormalMonsterCardSchema,
-		EffectMonsterCardSchema,
-		ContinuousEffectMonsterCardSchema,
-		MaximumEffectMonsterCardSchema,
-		MaximumContinuousEffectMonsterCardSchema,
+		MainDeckEffectMonsterCardSchema,
 		FusionNonEffectMonsterCardSchema,
 		FusionEffectMonsterCardSchema,
-		FusionContinuousEffectMonsterCardSchema,
-		MultiChoiceEffectMonsterCardSchema,
 		SpellCardSchema,
 		TrapCardSchema
 	],
