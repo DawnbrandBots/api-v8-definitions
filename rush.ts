@@ -49,26 +49,7 @@ const baseMonster = {
 	def: Type.Integer({ minimum: 0 })
 };
 
-const effect = {
-	requirement: Type.Object(locales),
-	effect: Type.Object(locales)
-};
-
-const continuousEffect = {
-	requirement: Type.Object(locales),
-	continuous_effect: Type.Object(locales)
-};
-
-const maximum = {
-	summoning_condition: Type.Object(locales),
-	maximum_atk: Type.Integer({ minimum: 0 })
-};
-
-const fusion = {
-	materials: Type.Object(locales)
-};
-
-const NormalMonsterCardSchema = Type.Object({
+const NonEffectMonsterCardSchema = Type.Object({
 	...baseMonster,
 	text: Type.Object(locales)
 });
@@ -84,11 +65,6 @@ const MainDeckEffectMonsterCardSchema = Type.Object({
 	// also may contain "Continuous" or "Multi-Choice"
 	effect_types: Type.Optional(Type.Array(Type.String({ minLength: 1 }), { minItems: 1 })),
 	effect: Type.Object(locales)
-});
-
-const FusionNonEffectMonsterCardSchema = Type.Object({
-	...baseMonster,
-	materials: Type.Object(locales)
 });
 
 const FusionEffectMonsterCardSchema = Type.Object({
@@ -121,8 +97,7 @@ export const RushCardSchema = Type.Union(
 	// Schema match priority is in array order. Be careful due to the similarity in shapes
 	[
 		FusionEffectMonsterCardSchema,
-		FusionNonEffectMonsterCardSchema,
-		NormalMonsterCardSchema,
+		NonEffectMonsterCardSchema,
 		MainDeckEffectMonsterCardSchema,
 		SpellCardSchema,
 		TrapCardSchema
