@@ -27,7 +27,16 @@ const base = {
 		ko: CardSetList,
 		"zh-CN": CardSetList,
 		"zh-TW": CardSetList
-	})
+	}),
+	images: Type.Optional(
+		Type.Array(
+			Type.Object({
+				index: Type.Union([Type.Integer({ minimum: 1 }), Type.String()]),
+				image: Type.String(),
+				illustration: Type.Optional(Type.String())
+			})
+		)
+	)
 };
 
 enum Attribute {

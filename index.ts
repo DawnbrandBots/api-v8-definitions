@@ -42,7 +42,16 @@ const base = {
 		tcg: Nullable(Type.Enum(LimitRegulation)),
 		ocg: Nullable(Type.Enum(LimitRegulation)),
 		speed: Type.Optional(Type.Enum(LimitRegulation))
-	})
+	}),
+	images: Type.Optional(
+		Type.Array(
+			Type.Object({
+				index: Type.Union([Type.Integer({ minimum: 1 }), Type.String()]),
+				image: Type.String(),
+				illustration: Type.Optional(Type.String())
+			})
+		)
+	)
 };
 
 export enum Attribute {
