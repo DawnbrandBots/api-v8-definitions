@@ -14,6 +14,7 @@ export enum OCGLimitRegulation {
 }
 
 export enum SpeedLimitRegulation {
+	Forbidden = "Forbidden",
 	Limited1 = "Limited 1",
 	Limited2 = "Limited 2",
 	Limited3 = "Limited 3",
