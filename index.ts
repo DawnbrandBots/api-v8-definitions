@@ -3,10 +3,20 @@ import { CardSetList, locales, LOCALES, Nullable } from "./common";
 
 export { LOCALES, Nullable };
 
-export enum LimitRegulation {
+export enum OCGLimitRegulation {
 	Forbidden = "Forbidden",
 	Limited = "Limited",
 	SemiLimited = "Semi-Limited",
+	Unlimited = "Unlimited",
+	Unreleased = "Not yet released",
+	// For most purposes equivalent to the above
+	NotYetLegal = "Not yet legal"
+}
+
+export enum SpeedLimitRegulation {
+	Limited1 = "Limited 1",
+	Limited2 = "Limited 2",
+	Limited3 = "Limited 3",
 	Unlimited = "Unlimited",
 	Unreleased = "Not yet released",
 	// For most purposes equivalent to the above
@@ -39,9 +49,9 @@ const base = {
 	}),
 	limit_regulation: Type.Object({
 		// null = Not yet released, structure may be changed in the future
-		tcg: Nullable(Type.Enum(LimitRegulation)),
-		ocg: Nullable(Type.Enum(LimitRegulation)),
-		speed: Type.Optional(Type.Enum(LimitRegulation))
+		tcg: Nullable(Type.Enum(OCGLimitRegulation)),
+		ocg: Nullable(Type.Enum(OCGLimitRegulation)),
+		speed: Type.Optional(Type.Enum(SpeedLimitRegulation))
 	}),
 	images: Type.Optional(
 		Type.Array(
