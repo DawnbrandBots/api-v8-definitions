@@ -1,5 +1,5 @@
 import { Type } from "@sinclair/typebox";
-import { CardSetList, locales, LOCALES, Nullable } from "./common";
+import { LOCALES, Nullable, images, is_translation_unofficial, localesNullableString, name, sets } from "./common";
 
 export { LOCALES, Nullable };
 
@@ -30,39 +30,17 @@ const base = {
 	fake_password: Type.Optional(
 		Type.Union([Type.Integer({ minimum: 0 }), Type.Array(Type.Integer({ minimum: 0 }), { minItems: 1 })])
 	),
-	name: Type.Object({
-		...locales,
-		ja_romaji: Nullable(Type.String()),
-		ko_rr: Nullable(Type.String())
-	}),
-	text: Type.Object(locales),
-	sets: Type.Object({
-		en: CardSetList,
-		de: CardSetList,
-		es: CardSetList,
-		fr: CardSetList,
-		it: CardSetList,
-		pt: CardSetList,
-		ja: CardSetList,
-		ko: CardSetList,
-		"zh-CN": CardSetList,
-		"zh-TW": CardSetList
-	}),
+	name,
+	text: Type.Object(localesNullableString),
+	sets,
 	limit_regulation: Type.Object({
 		// null = Not yet released, structure may be changed in the future
 		tcg: Nullable(Type.Enum(OCGLimitRegulation)),
 		ocg: Nullable(Type.Enum(OCGLimitRegulation)),
 		speed: Type.Optional(Type.Enum(SpeedLimitRegulation))
 	}),
-	images: Type.Optional(
-		Type.Array(
-			Type.Object({
-				index: Type.Union([Type.Integer({ minimum: 1 }), Type.String()]),
-				image: Type.String(),
-				illustration: Type.Optional(Type.String())
-			})
-		)
-	)
+	images,
+	is_translation_unofficial
 };
 
 export enum Attribute {
@@ -85,7 +63,7 @@ const baseMonster = {
 	atk: MonsterPoints,
 	// both or neither
 	pendulum_scale: Type.Optional(Type.Integer({ minimum: 0, maximum: 13 })),
-	pendulum_effect: Type.Optional(Type.Object(locales))
+	pendulum_effect: Type.Optional(Type.Object(localesNullableString))
 };
 
 const withLevel = {

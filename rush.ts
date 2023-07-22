@@ -1,5 +1,5 @@
 import { Type } from "@sinclair/typebox";
-import { CardSetList, locales, Nullable } from "./common";
+import { images, is_translation_unofficial, localesNullableString, name, Nullable, sets } from "./common";
 
 enum SpellType {
 	Normal = "Normal",
@@ -10,33 +10,11 @@ enum SpellType {
 const base = {
 	konami_id: Nullable(Type.Integer({ minimum: 0 })),
 	yugipedia_page_id: Type.Integer({ minimum: 0 }),
-	name: Type.Object({
-		...locales,
-		ja_romaji: Nullable(Type.String()),
-		ko_rr: Nullable(Type.String())
-	}),
+	name,
 	legend: Type.Optional(Type.Literal(true)),
-	sets: Type.Object({
-		en: CardSetList,
-		de: CardSetList,
-		es: CardSetList,
-		fr: CardSetList,
-		it: CardSetList,
-		pt: CardSetList,
-		ja: CardSetList,
-		ko: CardSetList,
-		"zh-CN": CardSetList,
-		"zh-TW": CardSetList
-	}),
-	images: Type.Optional(
-		Type.Array(
-			Type.Object({
-				index: Type.Union([Type.Integer({ minimum: 1 }), Type.String()]),
-				image: Type.String(),
-				illustration: Type.Optional(Type.String())
-			})
-		)
-	)
+	sets,
+	images,
+	is_translation_unofficial
 };
 
 enum Attribute {
@@ -60,7 +38,7 @@ const baseMonster = {
 
 const NonEffectMonsterCardSchema = Type.Object({
 	...baseMonster,
-	text: Type.Object(locales)
+	text: Type.Object(localesNullableString)
 });
 
 const MainDeckEffectMonsterCardSchema = Type.Object({
@@ -68,38 +46,38 @@ const MainDeckEffectMonsterCardSchema = Type.Object({
 	// if present then summoning_condition will be present
 	maximum_atk: Type.Optional(Type.Integer({ minimum: 0 })),
 	// present for Maximum Monsters and others like Cyber Dragon
-	summoning_condition: Type.Optional(Type.Object(locales)),
-	requirement: Type.Object(locales),
+	summoning_condition: Type.Optional(Type.Object(localesNullableString)),
+	requirement: Type.Object(localesNullableString),
 	// if summoning_condition is present then contains "Summoning condition"
 	// also may contain "Continuous" or "Multi-Choice"
 	effect_types: Type.Optional(Type.Array(Type.String({ minLength: 1 }), { minItems: 1 })),
-	effect: Type.Object(locales)
+	effect: Type.Object(localesNullableString)
 });
 
 const FusionEffectMonsterCardSchema = Type.Object({
 	...baseMonster,
-	materials: Type.Object(locales),
-	requirement: Type.Object(locales),
+	materials: Type.Object(localesNullableString),
+	requirement: Type.Object(localesNullableString),
 	// if summoning_condition is present then contains "Summoning condition"
 	// also may contain "Continuous" or "Multi-Choice"
 	effect_types: Type.Optional(Type.Array(Type.String({ minLength: 1 }), { minItems: 1 })),
-	effect: Type.Object(locales)
+	effect: Type.Object(localesNullableString)
 });
 
 const SpellCardSchema = Type.Object({
 	...base,
 	card_type: Type.Literal("Spell"),
 	property: Type.Enum(SpellType),
-	requirement: Type.Object(locales),
-	effect: Type.Object(locales)
+	requirement: Type.Object(localesNullableString),
+	effect: Type.Object(localesNullableString)
 });
 
 const TrapCardSchema = Type.Object({
 	...base,
 	card_type: Type.Literal("Trap"),
 	property: Type.Literal("Normal"),
-	requirement: Type.Object(locales),
-	effect: Type.Object(locales)
+	requirement: Type.Object(localesNullableString),
+	effect: Type.Object(localesNullableString)
 });
 
 export const RushCardSchema = Type.Union(

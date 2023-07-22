@@ -16,24 +16,42 @@ export const LOCALES = [
 	"zh-TW" // Traditional Chinese
 ] as const;
 
-export const locales = {
-	en: Nullable(Type.String()),
-	de: Nullable(Type.String()),
-	es: Nullable(Type.String()),
-	fr: Nullable(Type.String()),
-	it: Nullable(Type.String()),
-	pt: Nullable(Type.String()),
-	ja: Nullable(Type.String()),
-	ko: Nullable(Type.String()),
-	"zh-CN": Nullable(Type.String()),
-	"zh-TW": Nullable(Type.String())
-};
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+function keysToValue<K extends PropertyKey, V>(keys: readonly K[], value: V) {
+	return Object.fromEntries(keys.map(key => [key, value])) as Record<K, V>;
+}
 
-export const CardSet = Type.Object({
+export const localesNullableString = keysToValue(LOCALES, Nullable(Type.String()));
+
+export const name = Type.Object({
+	...localesNullableString,
+	ja_romaji: Nullable(Type.String()),
+	ko_rr: Nullable(Type.String())
+});
+
+const CardSet = Type.Object({
 	set_number: Type.String(),
 	set_name: Type.String(),
 	// could be enum but who knows
 	rarities: Nullable(Type.Array(Type.String()))
 });
+const CardSetList = Type.Optional(Type.Array(CardSet));
+export const sets = Type.Object(keysToValue(LOCALES, CardSetList));
 
-export const CardSetList = Type.Optional(Type.Array(CardSet));
+export const images = Type.Optional(
+	Type.Array(
+		Type.Object({
+			index: Type.Union([Type.Integer({ minimum: 1 }), Type.String()]),
+			image: Type.String(),
+			illustration: Type.Optional(Type.String())
+		})
+	)
+);
+
+const localesOptionalBoolean = keysToValue(LOCALES, Type.Optional(Type.Literal(true)));
+export const is_translation_unofficial = Type.Optional(
+	Type.Object({
+		name: Type.Optional(Type.Object(localesOptionalBoolean)),
+		text: Type.Optional(Type.Object(localesOptionalBoolean))
+	})
+);
