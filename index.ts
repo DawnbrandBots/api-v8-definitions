@@ -24,6 +24,13 @@ export enum SpeedLimitRegulation {
 	NotYetLegal = "Not yet legal"
 }
 
+export enum MasterDuelRarity {
+	N = "N",
+	R = "R",
+	SR = "SR",
+	UR = "UR"
+}
+
 const base = {
 	konami_id: Nullable(Type.Integer({ minimum: 0 })),
 	password: Nullable(Type.Integer({ minimum: 0 })),
@@ -40,7 +47,8 @@ const base = {
 		speed: Type.Optional(Type.Enum(SpeedLimitRegulation))
 	}),
 	images,
-	is_translation_unofficial
+	is_translation_unofficial,
+	master_duel_rarity: Type.Optional(Type.Enum(MasterDuelRarity))
 };
 
 export enum Attribute {
