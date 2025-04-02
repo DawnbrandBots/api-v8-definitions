@@ -4,7 +4,8 @@ import { images, is_translation_unofficial, localesNullableString, name, Nullabl
 enum SpellType {
 	Normal = "Normal",
 	Field = "Field",
-	Equip = "Equip"
+	Equip = "Equip",
+	Ritual = "Ritual"
 }
 
 const base = {
