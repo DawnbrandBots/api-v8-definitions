@@ -36,7 +36,7 @@ const CardSet = Type.Object({
 	rarities: Nullable(Type.Array(Type.String()))
 });
 const CardSetList = Type.Optional(Type.Array(CardSet));
-export const sets = Type.Object(keysToValue(LOCALES, CardSetList));
+export const sets = Type.Object({ ...keysToValue(LOCALES, CardSetList), "en-HK": CardSetList });
 
 export const images = Type.Optional(
 	Type.Array(
